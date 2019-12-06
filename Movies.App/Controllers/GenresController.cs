@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -112,6 +113,17 @@ namespace Movies.App.Controllers
             await _genreService.Delete(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Genres/SelectList
+        [HttpGet, ActionName("SelectList")]
+        public async Task<IActionResult> SelectList(string term)
+        {
+            var list = await _genreService.GetAll()
+                .Where(e => e.Name.Contains(term) && e.Active)
+                .ToListAsync();
+
+            return Json(list.Select(e => new { id = e.Id, text = e.Name }));
         }
 
         private bool GenreExists(long id)

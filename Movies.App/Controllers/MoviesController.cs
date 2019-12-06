@@ -129,6 +129,17 @@ namespace Movies.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Genres/SelectList
+        [HttpGet, ActionName("SelectList")]
+        public async Task<IActionResult> SelectList(string term)
+        {
+            var list = await _movieService.GetAll()
+                .Where(e => e.Name.Contains(term) && e.Active)
+                .ToListAsync();
+
+            return Json(list.Select(e => new { id = e.Id, text = e.Name }));
+        }
+
         private bool MovieExists(long id)
         {
             return _movieService.Exists(id);
