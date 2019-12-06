@@ -62,6 +62,8 @@ namespace Movies.App.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewBag.Genres = GetGenresList(movie.GenreId);
+
             return View(movie);
         }
 
@@ -105,6 +107,8 @@ namespace Movies.App.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Genres = GetGenresList(movie.GenreId);
 
             return View(movie);
         }

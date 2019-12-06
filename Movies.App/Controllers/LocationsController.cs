@@ -41,8 +41,6 @@ namespace Movies.App.Controllers
         // GET: Locations/Create
         public IActionResult Create()
         {
-            ViewBag.Movies = GetMoviesList();
-
             return View();
         }
 
@@ -69,8 +67,6 @@ namespace Movies.App.Controllers
             var location = await _locationService.GetByIdAsync(id);
 
             if (location == null) return NotFound();
-
-            ViewBag.Movies = GetMoviesList(location.Movies.Select(e => e.Id));
 
             return View(location);
         }
@@ -125,11 +121,6 @@ namespace Movies.App.Controllers
         private bool LocationExists(long id)
         {
             return _locationService.Exists(id);
-        }
-
-        private MultiSelectList GetMoviesList(IEnumerable<long> selection = null)
-        {
-            return new MultiSelectList(_movieService.GetAll().Where(e => e.Active).ToList(), "Id", "Name", selection);
         }
     }
 }

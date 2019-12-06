@@ -1,5 +1,6 @@
 ﻿using Movies.Framework.Entities;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Movies.Domain.Entities
 {
@@ -7,6 +8,7 @@ namespace Movies.Domain.Entities
     {
         public long GenreId { get; set; }
 
+        [MinLength(5), MaxLength(150)]
         public string Name { get; set; }
 
         public DateTime CreatedAt { get; set; }

@@ -41,11 +41,11 @@
     <script>
         $('.movie-list').select2({
             minimumInputLength: 5,
+            closeOnSelect: false,
             ajax: {
                 url: '/Movies/SelectList',
                 dataType: 'json',
                 processResults: function (data) {
-                    console.log(data);
                     return {
                         results: data
                     };
