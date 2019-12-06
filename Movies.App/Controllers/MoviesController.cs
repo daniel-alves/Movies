@@ -1,41 +1,37 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Movies.Domain;
 using Movies.Domain.Entities;
-using Movies.Infra.Repositories.Common;
+using Movies.Infra.Services.Common;
 
 namespace Movies.App.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly IMovieRepository<Genre> _genreRepository;
+        private readonly IMovieCrudService<Movie> _movieService;
 
-        private readonly IMovieRepository<Movie> _movieRepository;
-
-        private readonly IMapper _mapper;
-
-        public MoviesController(IMapper mapper, IMovieRepository<Movie> movieRepository, IMovieRepository<Genre> genreRepository)
+        private readonly IMovieCrudService<Genre> _genreService;
+        
+        public MoviesController(IMovieCrudService<Movie> movieService, IMovieCrudService<Genre> genreService)
         {
-            _mapper = mapper;
-            _movieRepository = movieRepository;
-            _genreRepository = genreRepository;
+            _genreService = genreService;
+            _movieService = movieService;
         }
 
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _movieRepository.GetAll().Include(e => e.Genre).ToListAsync());
+            return View(await _movieService.GetAll().Include(e => e.Genre).ToListAsync());
         }
 
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(long id)
         {
-            var movie = await _movieRepository.GetAll()
+            var movie = await _movieService.GetAll()
                 .Include(e => e.Genre)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
@@ -60,8 +56,8 @@ namespace Movies.App.Controllers
             if (ModelState.IsValid)
             {
                 movie.CreatedAt = DateTime.Now;
-                await _movieRepository.AddAsync(movie);
-                await _movieRepository.SaveChangesAsync();
+
+                await _movieService.Insert(movie);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -73,14 +69,13 @@ namespace Movies.App.Controllers
         public async Task<IActionResult> Edit(long id)
         {
 
-            var movie = await _movieRepository.GetAll()
+            var movie = await _movieService.GetAll()
                 .Include(e => e.Genre)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (movie == null) return NotFound();
 
             ViewBag.Genres = GetGenresList(movie.GenreId);
-
 
             return View(movie);
         }
@@ -95,14 +90,13 @@ namespace Movies.App.Controllers
             if (ModelState.IsValid)
             {
                 try{
-                    var entity = await _movieRepository.GetByIdAsync(id);
+                    var entity = await _movieService.GetByIdAsync(id);
 
                     entity.Name = movie.Name;
                     entity.GenreId = movie.GenreId;
                     entity.Active = movie.Active;
 
-                    _movieRepository.Update(entity);
-                    await _movieRepository.SaveChangesAsync();
+                    await _movieService.Update(entity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +112,7 @@ namespace Movies.App.Controllers
         // GET: Movies/Delete/5
         public async Task<IActionResult> Delete(long id)
         {
-            var movie = await _movieRepository.GetByIdAsync(id);
+            var movie = await _movieService.GetByIdAsync(id);
 
             if (movie == null) return NotFound();
 
@@ -130,20 +124,19 @@ namespace Movies.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            _movieRepository.Remove(id);
-            await _movieRepository.SaveChangesAsync();
+            await _movieService.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(long id)
         {
-            return _movieRepository.Exists(id);
+            return _movieService.Exists(id);
         }
 
         private SelectList GetGenresList(long? selectedId = null)
         {
-            return new SelectList(_genreRepository.GetAll().Where(e => e.Active).ToList(), "Id", "Name", selectedId);
+            return new SelectList(_genreService.GetAll().Where(e => e.Active).ToList(), "Id", "Name", selectedId);
         }
     }
 }
