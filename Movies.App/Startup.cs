@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Movies.App.Mappings;
 using Movies.Infra.Contexts;
 using Movies.Infra.Repositories.Common;
+using Movies.Infra.Services.Common;
 
 namespace Movies.App
 {
@@ -31,17 +32,20 @@ namespace Movies.App
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //automapper
+            //registra o automapper no container D.I
             var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
             services.AddSingleton(mappingConfig.CreateMapper());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //context do entity
+            //registra o dbcontext do entity no catainer D.I
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
 
-            //repository genérico
+            //registra repository genérico no catainer D.I
             services.AddScoped(typeof(IMovieRepository<>), typeof(MovieRepository<>));
+
+            //registra o service genérico no container D.I
+            services.AddScoped(typeof(IMovieCrudService<>), typeof(MovieCrudService<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

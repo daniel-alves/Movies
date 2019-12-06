@@ -3,29 +3,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Movies.Domain;
-using Movies.Infra.Repositories.Common;
+using Movies.Infra.Services.Common;
 
 namespace Movies.App.Controllers
 {
     public class GenresController : Controller
     {
-        private readonly IMovieRepository<Genre> _genreRepository;
+        private readonly IMovieCrudService<Genre> _genreService;
 
-        public GenresController(IMovieRepository<Genre> repository)
+        public GenresController(IMovieCrudService<Genre> service)
         {
-            _genreRepository = repository;
+            _genreService = service;
         }
 
         // GET: Genres
         public async Task<IActionResult> Index()
         {
-            return View(await _genreRepository.GetAll().ToListAsync());
+            return View(await _genreService.GetAll().ToListAsync());
         }
 
         // GET: Genres/Details/5
         public async Task<IActionResult> Details(long id)
         {   
-            var genre = await _genreRepository.GetByIdAsync(id);
+            var genre = await _genreService.GetByIdAsync(id);
 
             if (genre == null) return NotFound();
 
@@ -47,8 +47,7 @@ namespace Movies.App.Controllers
             {
                 genre.CreatedAt = DateTime.Now;
 
-                await _genreRepository.AddAsync(genre);
-                await _genreRepository.SaveChangesAsync();
+                await _genreService.Insert(genre);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -58,7 +57,7 @@ namespace Movies.App.Controllers
         // GET: Genres/Edit/5
         public async Task<IActionResult> Edit(long id)
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            var genre = await _genreService.GetByIdAsync(id);
 
             if (genre == null) return NotFound();
 
@@ -76,13 +75,12 @@ namespace Movies.App.Controllers
             {
                 try
                 {
-                    var entity = await _genreRepository.GetByIdAsync(id);
+                    var entity = await _genreService.GetByIdAsync(id);
 
                     entity.Name = genre.Name;
                     entity.Active = genre.Active;
 
-                    _genreRepository.Update(entity);
-                    await _genreRepository.SaveChangesAsync();
+                    await _genreService.Update(entity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -99,7 +97,7 @@ namespace Movies.App.Controllers
         // GET: Genres/Delete/5
         public async Task<IActionResult> Delete(long id)
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            var genre = await _genreService.GetByIdAsync(id);
 
             if (genre == null) return NotFound();
 
@@ -111,14 +109,12 @@ namespace Movies.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            _genreRepository.Remove(id);
-
-            await _genreRepository.SaveChangesAsync();
+            await _genreService.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
 
         private bool GenreExists(long id)
-            => _genreRepository.Exists(id);
+            => _genreService.Exists(id);
     }
 }

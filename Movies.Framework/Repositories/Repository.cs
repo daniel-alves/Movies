@@ -60,7 +60,7 @@ namespace Movies.Infra.Repositories
                 DbSet.Remove(entity);
         }
 
-        public bool Insert(IEnumerable<TEntity> items, bool cached = true)
+        public bool Insert(IEnumerable<TEntity> items)
         {
             var list = items.ToList();
             foreach (var item in list)
