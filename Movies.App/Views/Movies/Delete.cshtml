@@ -1,4 +1,4 @@
-﻿@model Movies.Domain.Entities.Movie
+﻿@model Movies.App.Models.Movies.MovieViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -30,7 +30,7 @@
             @Html.DisplayFor(model => model.Active)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-default" /> |

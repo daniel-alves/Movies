@@ -1,4 +1,4 @@
-﻿@model Movies.Domain.Entities.Movie
+﻿@model Movies.App.Models.Movies.MovieViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -17,10 +17,10 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Genre)
+            @Html.DisplayNameFor(model => model.GenreName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Genre.Name)
+            @Html.DisplayFor(model => model.GenreName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CreatedAt)

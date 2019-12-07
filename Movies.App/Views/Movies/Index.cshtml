@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Movies.Domain.Entities.Movie>
+﻿@model IEnumerable<Movies.App.Models.Movies.MovieViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                @Html.DisplayNameFor(model => model.GenreName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Genre.Name)
+                @Html.DisplayFor(modelItem => item.GenreName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)

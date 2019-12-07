@@ -45,7 +45,6 @@ namespace Movies.Framework.Services
 
         public virtual async Task<TEntity> Update(TEntity entity)
         {
-            
             _repository.Update(entity);
             
             await _repository.SaveChangesAsync();

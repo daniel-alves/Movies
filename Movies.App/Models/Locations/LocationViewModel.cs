@@ -1,0 +1,17 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Movies.App.Models.Locations
+{
+    public class LocationViewModel : ViewModel
+    {
+        [Display(Name = "CPF")]
+        public string Cpf { get; set; }
+
+        [Display(Name = "Filmes")]
+        public long[] MoviesId { get; set; }
+
+        [Display(Name = "Data da locação")]
+        public DateTime LocatedAt { get; set; }
+    }
+}

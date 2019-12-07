@@ -47,7 +47,11 @@ namespace Movies.Infra.Repositories
             => _context.SaveChanges();
 
         public bool Exists(long id)
-            => DbSet.Any(e => e.Id == id);
+        {
+            if (id == 0) return false;
+
+            return DbSet.Any(e => e.Id == id);
+        }
 
         public void RemoveRange(Func<TEntity, bool> where)
             => DbSet.RemoveRange(DbSet.Where(where));

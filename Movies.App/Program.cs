@@ -13,21 +13,22 @@ namespace Movies.App
         {
             var host = CreateWebHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            //cria a base automáticamente sem a necessidade de criar as migrations, é bom quando vc quer ver a coisa rodando mais rápido ;)
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                try
-                {
-                    var context = services.GetRequiredService<MovieContext>();
-                    context.Database.EnsureCreated();
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred creating the DB.");
-                }
-            }
+            //    try
+            //    {
+            //        var context = services.GetRequiredService<MovieContext>();
+            //        context.Database.EnsureCreated();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = services.GetRequiredService<ILogger<Program>>();
+            //        logger.LogError(ex, "An error occurred creating the DB.");
+            //    }
+            //}
 
             host.Run();
         }

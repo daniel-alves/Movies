@@ -9,11 +9,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Movies.App.Mappings;
-using Movies.Domain;
-using Movies.Domain.Entities;
+using Movies.App.Models.Genres;
+using Movies.App.Models.Locations;
+using Movies.App.Models.Movies;
+using Movies.App.Validators;
 using Movies.Infra.Contexts;
 using Movies.Infra.Repositories.Common;
 using Movies.Infra.Services.Common;
+using Movies.Infra.Services.Genres;
+using Movies.Infra.Services.Locations;
+using Movies.Infra.Services.Movies;
 using Movies.Infra.Validators;
 
 namespace Movies.App
@@ -45,16 +50,19 @@ namespace Movies.App
             //registra o dbcontext do entity no catainer D.I
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
 
-            //registra repository genérico no catainer D.I
-            services.AddScoped(typeof(IMovieRepository<>), typeof(MovieRepository<>));
+            //registra os repositories no catainer D.I
+            services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
 
-            //registra o service genérico no container D.I
-            services.AddScoped(typeof(IMovieCrudService<>), typeof(MovieCrudService<>));
+            //registra os services no container D.I
+            services.AddScoped(typeof(ICommonCrudService<>), typeof(CommonCrudService<>));
+            services.AddScoped<IGenreCrudService, GenreCrudService>();
+            services.AddScoped<IMovieCrudService, MovieCrudService>();
+            services.AddScoped<ILocationCrudService, LocationCrudService>();
 
             //registra os validators no container D.I
-            services.AddTransient<IValidator<Genre>, GenreValidator>();
-            services.AddTransient<IValidator<Movie>, MovieValidator>();
-            services.AddTransient<IValidator<Location>, LocationValidator>();
+            services.AddTransient<IValidator<GenreViewModel>, GenreValidator>();
+            services.AddTransient<IValidator<MovieViewModel>, MovieValidator>();
+            services.AddTransient<IValidator<LocationViewModel>, LocationValidator>();
 
         }
 

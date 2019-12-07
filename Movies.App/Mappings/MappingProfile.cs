@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Movies.App.Models.Genres;
+using Movies.App.Models.Locations;
+using Movies.App.Models.Movies;
 using Movies.Domain;
 using Movies.Domain.Entities;
 
@@ -9,13 +12,11 @@ namespace Movies.App.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Genre, SelectListItem>()
-                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name));
+            CreateMap<Genre, GenreViewModel>().ReverseMap();
 
-            CreateMap<Movie, SelectListItem>()
-                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name));
+            CreateMap<Movie, MovieViewModel>().ReverseMap();
+
+            CreateMap<Location, LocationViewModel>().ReverseMap();
         }
     }
 }

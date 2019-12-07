@@ -1,17 +1,18 @@
-﻿using Movies.Domain.Entities;
+﻿using System;
 using Movies.Framework.Entities;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Movies.Domain
 {
     public class Genre : Entity
     {
-        [MinLength(5), MaxLength(50)]
+        [MinLength(5), MaxLength(50), Required]
         public string Name { get; set; }
 
+        [Required]
         public DateTime CreatedAt { get; set; }
 
+        [Required]
         public bool Active { get; set; }
     }
 }
