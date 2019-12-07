@@ -10,7 +10,7 @@ using Movies.Infra.Contexts;
 namespace Movies.Infra.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20191207183549_Initial")]
+    [Migration("20191207204119_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,8 +65,6 @@ namespace Movies.Infra.Migrations
                     b.Property<long>("MovieId");
 
                     b.Property<long>("LocationId");
-
-                    b.Property<long>("Id");
 
                     b.HasKey("MovieId", "LocationId");
 

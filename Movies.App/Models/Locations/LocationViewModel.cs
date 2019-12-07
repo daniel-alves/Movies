@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Movies.App.Models.Movies;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Movies.App.Models.Locations
@@ -13,5 +15,7 @@ namespace Movies.App.Models.Locations
 
         [Display(Name = "Data da locação")]
         public DateTime LocatedAt { get; set; }
+
+        public IEnumerable<MovieViewModel> Movies { get; set; }
     }
 }

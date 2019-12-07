@@ -12,7 +12,7 @@ namespace Movies.Framework.Services
         where TEntity : Entity
         where TContext : DbContext
     {
-        private readonly IRepository<TEntity, TContext> _repository;
+        protected readonly IRepository<TEntity, TContext> _repository;
 
         protected CrudService(IRepository<TEntity, TContext> repository)
         {
@@ -36,7 +36,7 @@ namespace Movies.Framework.Services
         {
             var itemsList = items.ToList();
 
-            var result = _repository.Insert(itemsList);
+            var result = _repository.Add(itemsList);
 
             _repository.SaveChanges();
 

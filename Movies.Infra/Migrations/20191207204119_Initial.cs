@@ -63,7 +63,6 @@ namespace Movies.Infra.Migrations
                 name: "MovieLocation",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
                     MovieId = table.Column<long>(nullable: false),
                     LocationId = table.Column<long>(nullable: false)
                 },

@@ -64,8 +64,6 @@ namespace Movies.Infra.Migrations
 
                     b.Property<long>("LocationId");
 
-                    b.Property<long>("Id");
-
                     b.HasKey("MovieId", "LocationId");
 
                     b.HasIndex("LocationId");

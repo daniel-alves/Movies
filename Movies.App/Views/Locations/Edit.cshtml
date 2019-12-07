@@ -1,12 +1,9 @@
 ﻿@model Movies.App.Models.Locations.LocationViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edição";
 }
-
-<h2>Edit</h2>
-
-<h4>Location</h4>
+<h4>Editar locação</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,21 +16,42 @@
             </div>
             <div>
                 <label asp-for="MoviesId" class="control-label"></label>
-                <select name="Movies" class="form-control movie-list" multiple></select>
+                <select name="MoviesId" class="form-control movie-list" multiple>
+                    @foreach (var movie in Model.Movies)
+                    {
+                        <option value="@movie.Id" selected>@movie.Name</option>
+                    }
+                </select>
                 <span asp-validation-for="MoviesId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <br/>
+                <input type="submit" value="Salvar" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar para a listagem</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('.movie-list').select2({
+            minimumInputLength: 5,
+            closeOnSelect: false,
+            ajax: {
+                url: '/Movies/SelectList',
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                }
+            }
+        })
+    </script>
 }

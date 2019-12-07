@@ -1,12 +1,10 @@
 ﻿@model Movies.App.Models.Locations.LocationViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Cadastro";
 }
 
-<h2>Create</h2>
-
-<h4>Location</h4>
+<h4>Cadastro de locação</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,19 +17,19 @@
             </div>
             <div>
                 <label asp-for="MoviesId" class="control-label"></label>
-                <select name="Movies" class="form-control movie-list" multiple></select>
+                <select name="MoviesId" class="form-control movie-list" multiple></select>
                 <span asp-validation-for="MoviesId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <br/>
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Salvar" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar para a listagem</a>
 </div>
 
 @section Scripts {

@@ -30,7 +30,7 @@ namespace Movies.Framework.Repositories.Base
 
         int SaveChanges();
 
-        bool Insert(IEnumerable<TEntity> items);
+        bool Add(IEnumerable<TEntity> items);
 
         bool Update(IEnumerable<TEntity> entities);
 
