@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> signInManager;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -27,22 +29,28 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Locations" asp-action="Index" class="navbar-brand">Movies.App</a>
+                <a asp-area="" asp-controller="Location" asp-action="Index" class="navbar-brand">Movies.App</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Genres" asp-action="Index">Gêneros</a></li>
-                    <li><a asp-area="" asp-controller="Movies" asp-action="Index">Filmes</a></li>
-                    <li><a asp-area="" asp-controller="Locations" asp-action="Index">Locações</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Accounts" asp-action="Register">
-                            Cadastre-se
-                        </a>
-                    </li>
-                </ul>
-
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="Genre" asp-action="Index">Gêneros</a></li>
+                        <li><a asp-area="" asp-controller="Movie" asp-action="Index">Filmes</a></li>
+                        <li><a asp-area="" asp-controller="Location" asp-action="Index">Locações</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="javascript:;">@User.Identity.Name</a></li>
+                        <li><a asp-controller="Account" asp-action="Logout">Sair</a></li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a asp-controller="Account" asp-action="Register">Cadastre-se</a></li>
+                        <li><a asp-controller="Account" asp-action="Login">Login</a></li> 
+                    </ul>
+                }
             </div>
         </div>
     </nav>

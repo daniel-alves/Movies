@@ -9,7 +9,7 @@ using Movies.Infra.Services.Common;
 
 namespace Movies.Framework.Controllers
 {
-    public class CrudController<TEntity, TViewModel> : Controller
+    public abstract class CrudController<TEntity, TViewModel> : Controller
         where TEntity : Entity
         where TViewModel : ViewModel
     { 

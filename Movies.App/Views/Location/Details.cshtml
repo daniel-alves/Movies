@@ -1,0 +1,39 @@
+﻿@model Movies.App.Models.Locations.LocationViewModel
+
+@{
+    ViewData["Title"] = "Detalhes";
+}
+
+<h2>Detalhes da locação</h2>
+
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Cpf)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cpf)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocatedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MoviesId)
+        </dt>
+        <dd>
+            @foreach (var movie in Model.Movies)
+            {
+                @movie.Name <br />
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
+    <a asp-action="Index">Voltar para listagem</a>
+</div>

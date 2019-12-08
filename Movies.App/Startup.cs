@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,10 +35,11 @@ namespace Movies.App
         {
             Configuration = configuration;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options => {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -49,7 +51,7 @@ namespace Movies.App
             services.AddMvc()
                 .AddFluentValidation(fv => { fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false; })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+
             //registra o dbcontext do entity no catainer D.I
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
 
@@ -72,6 +74,7 @@ namespace Movies.App
             services.AddTransient<IValidator<MovieViewModel>, MovieValidator>();
             services.AddTransient<IValidator<LocationViewModel>, LocationValidator>();
             services.AddTransient<IValidator<RegisterViewModel>, RegisterValidator>();
+            services.AddTransient<IValidator<LoginViewModel>, LoginValidator>();
 
         }
 
@@ -98,7 +101,7 @@ namespace Movies.App
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Accounts}/{action=Login}");
+                    template: "{controller=Location}/{action=Index}");
             });
         }
     }
