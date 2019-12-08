@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Movies.Infra\Movies.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Movie\DeleteMany.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

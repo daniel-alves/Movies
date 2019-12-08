@@ -3,44 +3,72 @@
 @{ ViewData["Title"] = "Listagem"; }
 
 <h2>Listagem de gênero</h2>
-<hr/>
+<hr />
 
 <p>
     <a asp-action="Create">Cadastrar</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
-            </td>
-        </tr>
+<br />
+<form asp-action="DeleteMany">
+    <div class="form-group">
+        <input type="submit" value="Excluir seleção" class="btn btn-default deleteAll" disabled/>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <input name="all" class="selectAll" title="Selecionar todos" type="checkbox" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Active)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input name="ids" class="select" value="@item.Id" type="checkbox" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+@section Scripts {
+    <script>
+        $(".selectAll").click(function (ev) {
+            var checked = $(ev.target).is(":checked");
+            $(".select").prop('checked', checked);
+            $(".deleteAll").prop("disabled", !checked);
+        });
+
+        $(".select").change(function (ev) {
+            var checked = $(ev.target).is(":checked");
+            $(".deleteAll").prop("disabled", !checked);
+        });
+    </script>
 }
-    </tbody>
-</table>

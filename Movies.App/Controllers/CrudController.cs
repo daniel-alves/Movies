@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -35,8 +36,6 @@ namespace Movies.Framework.Controllers
         {
             var entity = await _service.GetByIdAsync(id);
 
-            if (entity == null) return NotFound();
-
             return View(_mapper.Map<TViewModel>(entity));
         }
         
@@ -61,8 +60,6 @@ namespace Movies.Framework.Controllers
         public virtual async Task<IActionResult> Edit(long id)
         {
             var entity = await _service.GetByIdAsync(id);
-
-            if (entity == null) return NotFound();
 
             return View(_mapper.Map<TViewModel>(entity));
         }
@@ -95,14 +92,39 @@ namespace Movies.Framework.Controllers
         {
             var entity = await _service.GetByIdAsync(id);
 
-            if (entity == null) return NotFound();
-
             var viewModel = _mapper.Map<TViewModel>(entity);
             viewModel.CanDelete = _service.CanDelete(id);
 
             return View(viewModel);
         }
-        
+
+        [HttpPost]
+        public virtual async Task<IActionResult> DeleteMany(long[] ids)
+        {
+            var selection = await _service.GetAll().Where(e => ids.Contains(e.Id)).ToListAsync();
+
+            var viewModels = _mapper.Map<List<TViewModel>>(selection);
+
+            viewModels.ForEach(v => v.CanDelete = _service.CanDelete(v.Id));
+
+            return View(viewModels);
+        }
+
+        [HttpPost]
+        public virtual async Task<IActionResult> DeleteManyConfirmed(long[] ids)
+        {
+
+            foreach(var id in ids)
+            {
+                if (_service.CanDelete(id))
+                {
+                    await _service.Delete(id);
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> DeleteConfirmed(long id)
@@ -114,7 +136,7 @@ namespace Movies.Framework.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return RedirectToAction(nameof(Delete));
+            return RedirectToAction(nameof(Delete), new { id });
         }
 
         private bool GenreExists(long id)
