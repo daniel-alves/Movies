@@ -1,6 +1,6 @@
 ﻿using Movies.Framework.Entities;
 using Movies.Framework.Repositories.Base;
-using Movies.Infra.Contexts;
+using Movies.Infra.Data.Contexts;
 
 namespace Movies.Infra.Repositories.Common
 {

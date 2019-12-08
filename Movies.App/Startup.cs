@@ -17,7 +17,7 @@ using Movies.App.Models.Genres;
 using Movies.App.Models.Locations;
 using Movies.App.Models.Movies;
 using Movies.App.Validators;
-using Movies.Infra.Contexts;
+using Movies.Infra.Data.Contexts;
 using Movies.Infra.Repositories.Common;
 using Movies.Infra.Services.Common;
 using Movies.Infra.Services.Genres;

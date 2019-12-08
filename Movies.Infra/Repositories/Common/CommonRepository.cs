@@ -1,5 +1,5 @@
 ﻿using Movies.Framework.Entities;
-using Movies.Infra.Contexts;
+using Movies.Infra.Data.Contexts;
 
 namespace Movies.Infra.Repositories.Common
 {

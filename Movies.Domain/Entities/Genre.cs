@@ -1,6 +1,8 @@
 ﻿using System;
 using Movies.Framework.Entities;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Movies.Domain.Entities;
 
 namespace Movies.Domain
 {
@@ -14,5 +16,7 @@ namespace Movies.Domain
 
         [Required]
         public bool Active { get; set; }
+
+        public ICollection<Movie> Movies { get; set; }
     }
 }

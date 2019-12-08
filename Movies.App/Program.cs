@@ -1,9 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Movies.Infra.Contexts;
 
 namespace Movies.App
 {
@@ -11,26 +7,7 @@ namespace Movies.App
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
-
-            //cria a base automáticamente sem a necessidade de criar as migrations, é bom quando vc quer ver a coisa rodando mais rápido ;)
-            //using (var scope = host.Services.CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
-
-            //    try
-            //    {
-            //        var context = services.GetRequiredService<MovieContext>();
-            //        context.Database.EnsureCreated();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        var logger = services.GetRequiredService<ILogger<Program>>();
-            //        logger.LogError(ex, "An error occurred creating the DB.");
-            //    }
-            //}
-
-            host.Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
