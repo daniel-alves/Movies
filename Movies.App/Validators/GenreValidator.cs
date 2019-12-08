@@ -1,16 +1,15 @@
 ﻿using FluentValidation;
 using Movies.App.Models.Genres;
-using Movies.Domain;
-using Movies.Infra.Services.Common;
+using Movies.Infra.Services.Genres;
 using System.Linq;
 
 namespace Movies.App.Validators
 {
     public class GenreValidator : AbstractValidator<GenreViewModel>
     {
-        private readonly ICommonCrudService<Genre> _genreService;
+        private readonly IGenreCrudService _genreService;
 
-        public GenreValidator(ICommonCrudService<Genre> genreService)
+        public GenreValidator(IGenreCrudService genreService)
         {
             RuleFor(e => e.Name)
                 .NotEmpty().WithMessage("Obrigatório")

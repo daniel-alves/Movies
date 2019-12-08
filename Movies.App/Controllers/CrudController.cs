@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Movies.App.Models;
 using Movies.Framework.Entities;
-using Movies.Infra.Services.Common;
+using Movies.Framework.Services;
+using Movies.Infra.Data.Contexts;
 
 namespace Movies.Framework.Controllers
 {
@@ -14,9 +15,10 @@ namespace Movies.Framework.Controllers
         where TViewModel : ViewModel
     { 
         protected readonly IMapper _mapper;
-        protected readonly ICommonCrudService<TEntity> _service;
 
-        public CrudController(IMapper mapper, ICommonCrudService<TEntity> service)
+        protected readonly ICrudService<TEntity, MovieContext> _service;
+
+        public CrudController(IMapper mapper, ICrudService<TEntity, MovieContext> service)
         {
             _mapper = mapper;
             _service = service;
@@ -95,16 +97,24 @@ namespace Movies.Framework.Controllers
 
             if (entity == null) return NotFound();
 
-            return View(_mapper.Map<TViewModel>(entity));
+            var viewModel = _mapper.Map<TViewModel>(entity);
+            viewModel.CanDelete = _service.CanDelete(id);
+
+            return View(viewModel);
         }
         
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> DeleteConfirmed(long id)
         {
-            await _service.Delete(id);
+            if (_service.CanDelete(id))
+            {
+                await _service.Delete(id);
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Delete));
         }
 
         private bool GenreExists(long id)

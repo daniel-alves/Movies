@@ -8,7 +8,7 @@ namespace Movies.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<MovieLocation> builder)
         {
-            builder.HasKey(t => new { t.MovieId, t.LocationId });
+            builder.HasIndex(t => new { t.MovieId, t.LocationId }).IsUnique();
 
             builder.HasOne(e => e.Movie)
                 .WithMany(e => e.Locations)

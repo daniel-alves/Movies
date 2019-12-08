@@ -3,16 +3,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Movies.Domain.Entities;
+using Movies.Framework.Services;
+using Movies.Infra.Data.Contexts;
 using Movies.Infra.Repositories.Common;
-using Movies.Infra.Services.Common;
 
 namespace Movies.Infra.Services.Movies
 {
-    public class MovieCrudService : CommonCrudService<Movie>, IMovieCrudService
+    public class MovieCrudService : CrudService<Movie, MovieContext>, IMovieCrudService
     {
-        public MovieCrudService(ICommonRepository<Movie> repository) : base(repository)
-        {
+        private readonly ICommonRepository<MovieLocation> _movieLocationRepository;
 
+        public MovieCrudService(ICommonRepository<Movie> repository, ICommonRepository<MovieLocation> movieLocationRepository) 
+            : base(repository)
+        {
+            _movieLocationRepository = movieLocationRepository;
+        }
+
+        public override bool CanDelete(long id)
+        {
+            var location = _movieLocationRepository.GetAll()
+                .FirstOrDefault(e => e.MovieId == id);
+
+            return location == null;
         }
 
         public override IQueryable<Movie> GetAll()

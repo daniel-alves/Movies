@@ -96,5 +96,7 @@ namespace Movies.Framework.Services
         public virtual bool Exists(long id) {
             return _repository.Exists(id);
         }
+
+        public abstract bool CanDelete(long id);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using Movies.Domain.Entities;
-using Movies.Infra.Services.Common;
+using Movies.Framework.Services;
+using Movies.Infra.Data.Contexts;
 
 namespace Movies.Infra.Services.Locations
 {
-    public interface ILocationCrudService : ICommonCrudService<Location>
+    public interface ILocationCrudService : ICrudService<Location, MovieContext>
     {
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +18,6 @@ using Movies.App.Models.Movies;
 using Movies.App.Validators;
 using Movies.Infra.Data.Contexts;
 using Movies.Infra.Repositories.Common;
-using Movies.Infra.Services.Common;
 using Movies.Infra.Services.Genres;
 using Movies.Infra.Services.Locations;
 using Movies.Infra.Services.Movies;
@@ -64,7 +62,6 @@ namespace Movies.App
             services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
 
             //registra os services no container D.I
-            services.AddScoped(typeof(ICommonCrudService<>), typeof(CommonCrudService<>));
             services.AddScoped<IGenreCrudService, GenreCrudService>();
             services.AddScoped<IMovieCrudService, MovieCrudService>();
             services.AddScoped<ILocationCrudService, LocationCrudService>();

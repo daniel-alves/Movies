@@ -208,12 +208,14 @@ namespace Movies.Infra.Data.Migrations
                 name: "MovieLocation",
                 columns: table => new
                 {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     MovieId = table.Column<long>(nullable: false),
                     LocationId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MovieLocation", x => new { x.MovieId, x.LocationId });
+                    table.PrimaryKey("PK_MovieLocation", x => x.Id);
                     table.ForeignKey(
                         name: "FK_MovieLocation_Location_LocationId",
                         column: x => x.LocationId,
@@ -276,6 +278,12 @@ namespace Movies.Infra.Data.Migrations
                 name: "IX_MovieLocation_LocationId",
                 table: "MovieLocation",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovieLocation_MovieId_LocationId",
+                table: "MovieLocation",
+                columns: new[] { "MovieId", "LocationId" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

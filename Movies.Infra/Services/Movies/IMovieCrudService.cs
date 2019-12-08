@@ -1,9 +1,10 @@
 ﻿using Movies.Domain.Entities;
-using Movies.Infra.Services.Common;
+using Movies.Framework.Services;
+using Movies.Infra.Data.Contexts;
 
 namespace Movies.Infra.Services.Movies
 {
-    public interface IMovieCrudService : ICommonCrudService<Movie>
+    public interface IMovieCrudService : ICrudService<Movie, MovieContext>
     {
     }
 }

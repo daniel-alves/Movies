@@ -32,5 +32,7 @@ namespace Movies.Framework.Services
         TEntity Get(long id);
 
         bool Exists(long id);
+
+        bool CanDelete(long id);
     }
 }

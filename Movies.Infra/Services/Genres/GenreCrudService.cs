@@ -1,17 +1,29 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Movies.Domain;
+using Movies.Domain.Entities;
+using Movies.Framework.Services;
+using Movies.Infra.Data.Contexts;
 using Movies.Infra.Repositories.Common;
-using Movies.Infra.Services.Common;
 
 namespace Movies.Infra.Services.Genres
 {
-    public class GenreCrudService : CommonCrudService<Genre>, IGenreCrudService
+    public class GenreCrudService : CrudService<Genre, MovieContext>, IGenreCrudService
     {
-        public GenreCrudService(ICommonRepository<Genre> repository) 
+        private readonly ICommonRepository<Movie> _movieRepository;
+
+        public GenreCrudService(ICommonRepository<Genre> repository, ICommonRepository<Movie> movieRepository) 
             : base(repository)
         {
-                
+            _movieRepository = movieRepository;
+        }
+
+        public override bool CanDelete(long id)
+        {
+            var movie = _movieRepository.GetAll().FirstOrDefault(e => e.GenreId == id);
+
+            return movie == null;
         }
 
         public override async Task<Genre> Insert(Genre entity)

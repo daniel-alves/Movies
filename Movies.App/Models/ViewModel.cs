@@ -4,5 +4,6 @@
     {
         public long Id { get; set; }
 
+        public bool CanDelete { get; set; }
     }
 }

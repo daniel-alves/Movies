@@ -2,7 +2,7 @@
 
 namespace Movies.Domain.Entities
 {
-    public class MovieLocation
+    public class MovieLocation : Entity
     {
         public long MovieId { get; set; }
         

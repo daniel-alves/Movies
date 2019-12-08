@@ -4,7 +4,19 @@
 
 <h2>Excluir filme</h2>
 <hr />
-<h4>Tem certeza que deseja excluir este filme?</h4>
+@if (Model.CanDelete)
+{
+    <div class="alert alert-warning" role="alert">
+        <strong>Tem certeza que deseja excluir este filme?</strong>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <strong> Não é possível excluir este filme, ele está sendo utilizado em algumas locações.</strong>
+    </div>
+}
+
 <hr />
 <div>
     <dl class="dl-horizontal">
@@ -28,9 +40,13 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Excluir" class="btn btn-default" /> |
-        <a asp-action="Index">Voltar para a listagem</a>
-    </form>
+    @if (Model.CanDelete)
+    {
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Excluir" class="btn btn-default" /> |
+            <a asp-action="Index">Voltar para a listagem</a>
+        </form>
+    }
+
 </div>

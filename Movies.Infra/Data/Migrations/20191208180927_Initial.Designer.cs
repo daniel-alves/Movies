@@ -10,7 +10,7 @@ using Movies.Infra.Data.Contexts;
 namespace Movies.Infra.Data.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20191208173023_Initial")]
+    [Migration("20191208180927_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,13 +223,20 @@ namespace Movies.Infra.Data.Migrations
 
             modelBuilder.Entity("Movies.Domain.Entities.MovieLocation", b =>
                 {
-                    b.Property<long>("MovieId");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("LocationId");
 
-                    b.HasKey("MovieId", "LocationId");
+                    b.Property<long>("MovieId");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("LocationId");
+
+                    b.HasIndex("MovieId", "LocationId")
+                        .IsUnique();
 
                     b.ToTable("MovieLocation");
                 });

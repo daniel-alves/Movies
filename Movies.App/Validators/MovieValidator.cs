@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 using Movies.App.Models.Movies;
-using Movies.Domain;
-using Movies.Domain.Entities;
-using Movies.Infra.Services.Common;
+using Movies.Infra.Services.Genres;
+using Movies.Infra.Services.Movies;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +10,11 @@ namespace Movies.Infra.Validators
 {
     public class MovieValidator : AbstractValidator<MovieViewModel>
     {
-        private readonly ICommonCrudService<Movie> _movieService;
+        private readonly IMovieCrudService _movieService;
 
-        private readonly ICommonCrudService<Genre> _genreService;
+        private readonly IGenreCrudService _genreService;
 
-        public MovieValidator(ICommonCrudService<Genre> genreService, ICommonCrudService<Movie> movieService)
+        public MovieValidator(IGenreCrudService genreService, IMovieCrudService movieService)
         {
             RuleFor(e => e.Name)
                 .NotEmpty()

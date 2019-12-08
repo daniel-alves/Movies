@@ -1,9 +1,10 @@
 ﻿using Movies.Domain;
-using Movies.Infra.Services.Common;
+using Movies.Framework.Services;
+using Movies.Infra.Data.Contexts;
 
 namespace Movies.Infra.Services.Genres
 {
-    public interface IGenreCrudService : ICommonCrudService<Genre>
+    public interface IGenreCrudService : ICrudService<Genre, MovieContext>
     {
     }
 }
