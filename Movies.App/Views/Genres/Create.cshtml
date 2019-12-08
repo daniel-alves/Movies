@@ -1,13 +1,11 @@
 ﻿@model Movies.App.Models.Genres.GenreViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
+@{ ViewData["Title"] = "Listagem"; }
 
-<h2>Create</h2>
+<h2>Cadastro de gênero</h2>
 
-<h4>Genre</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -25,14 +23,14 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Salvar" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar para a listagem</a>
 </div>
 
 @section Scripts {

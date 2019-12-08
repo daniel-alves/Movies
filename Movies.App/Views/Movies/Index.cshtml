@@ -1,14 +1,12 @@
 ﻿@model IEnumerable<Movies.App.Models.Movies.MovieViewModel>
 
-@{
-    ViewData["Title"] = "Index";
-}
+@{ ViewData["Title"] = "Listagem"; }
 
-<h2>Index</h2>
+<h2>Listagem de filmes</h2>
+<hr/>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<p> <a asp-action="Create">Cadastrar</a> </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -43,9 +41,9 @@
                 @Html.DisplayFor(modelItem => item.Active)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
             </td>
         </tr>
 }
