@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Movies.Domain;
 using Movies.Domain.Entities;
 
 namespace Movies.Infra.Contexts
 {
-    public class MovieContext : DbContext
+    public class MovieContext : IdentityDbContext
     {
         public DbSet<Genre> Genre { get; set; }
         public DbSet<Movie> Movie { get; set; }

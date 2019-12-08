@@ -4,11 +4,14 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Movies.App.Describers.Identity;
 using Movies.App.Mappings;
+using Movies.App.Models.Accounts;
 using Movies.App.Models.Genres;
 using Movies.App.Models.Locations;
 using Movies.App.Models.Movies;
@@ -50,6 +53,11 @@ namespace Movies.App
             //registra o dbcontext do entity no catainer D.I
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MovieContext")));
 
+            //registra o identity no container D.I
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<MovieContext>()
+                .AddErrorDescriber<PtBrIdentityErrorDescriber>();
+
             //registra os repositories no catainer D.I
             services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
 
@@ -63,6 +71,7 @@ namespace Movies.App
             services.AddTransient<IValidator<GenreViewModel>, GenreValidator>();
             services.AddTransient<IValidator<MovieViewModel>, MovieValidator>();
             services.AddTransient<IValidator<LocationViewModel>, LocationValidator>();
+            services.AddTransient<IValidator<RegisterViewModel>, RegisterValidator>();
 
         }
 
@@ -83,11 +92,13 @@ namespace Movies.App
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Accounts}/{action=Login}");
             });
         }
     }

@@ -18,13 +18,13 @@ namespace Movies.Infra.Validators
         public MovieValidator(ICommonCrudService<Genre> genreService, ICommonCrudService<Movie> movieService)
         {
             RuleFor(e => e.Name)
-                .NotEmpty().WithMessage("Obrigatório.")
+                .NotEmpty()
                 .MaximumLength(150)
                 .Must(BeUniqueName).WithMessage("Já foi cadastrado.");
 
             RuleFor(e => e.GenreId)
                 .Must(Exists).WithMessage("Obrigatório.")
-                .MustAsync(BeActive).WithMessage("Não deve estar inativo.");
+                .MustAsync(BeActive).WithMessage("O genêro deve estar ativo.");
 
             _genreService = genreService;
             _movieService = movieService;
