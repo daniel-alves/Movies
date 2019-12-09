@@ -9,7 +9,7 @@ using Movies.Infra.Repositories.Common;
 
 namespace Movies.Infra.Services.Movies
 {
-    public class MovieCrudService : CrudService<Movie, MovieContext>, IMovieCrudService
+    public class MovieCrudService : CrudService<Movie>, IMovieCrudService
     {
         private readonly ICommonRepository<MovieLocation> _movieLocationRepository;
 
@@ -44,15 +44,15 @@ namespace Movies.Infra.Services.Movies
             return await base.Insert(entity);
         }
 
-        public override async Task<Movie> Update(Movie entity)
+        public override Movie Update(Movie entity)
         {
-            var persisted = await GetByIdAsync(entity.Id);
+            var persisted = Get(entity.Id);
 
             persisted.Name = entity.Name;
             persisted.Active = entity.Active;
             persisted.GenreId = entity.GenreId;
 
-            return await base.Update(persisted);
+            return base.Update(persisted);
         }
     }
 }

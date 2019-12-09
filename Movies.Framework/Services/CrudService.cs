@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Movies.Framework.Entities;
-using Movies.Framework.Repositories.Base;
+using Movies.Framework.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace Movies.Framework.Services
 {
-    public abstract class CrudService<TEntity, TContext> : ICrudService<TEntity, TContext>
+    public abstract class CrudService<TEntity> : ICrudService<TEntity>
         where TEntity : Entity
-        where TContext : DbContext
     {
-        protected readonly IRepository<TEntity, TContext> _repository;
+        protected readonly IRepository<TEntity> _repository;
 
-        protected CrudService(IRepository<TEntity, TContext> repository)
+        protected CrudService(IRepository<TEntity> repository)
         {
             _repository = repository;
         }
@@ -26,9 +25,7 @@ namespace Movies.Framework.Services
 
         public virtual async Task<TEntity> Insert(TEntity entity)
         {
-            _repository.Add(entity);
-            await _repository.SaveChangesAsync();
-
+            await _repository.AddAsync(entity);
             return entity;
         }
 
@@ -38,24 +35,19 @@ namespace Movies.Framework.Services
 
             var result = _repository.Add(itemsList);
 
-            _repository.SaveChanges();
-
             return result;
         }
 
-        public virtual async Task<TEntity> Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
             _repository.Update(entity);
             
-            await _repository.SaveChangesAsync();
-
             return entity;
         }
 
-        public virtual async Task<IEnumerable<TEntity>> Update(IEnumerable<TEntity> entities)
+        public virtual IEnumerable<TEntity> Update(IEnumerable<TEntity> entities)
         {
             _repository.Update(entities);
-            await _repository.SaveChangesAsync();
 
             return entities;
         }
@@ -63,22 +55,14 @@ namespace Movies.Framework.Services
         public virtual async Task<TEntity> Save(TEntity entity)
         {
             if (entity.Id > 0)
-                return await Update(entity);
+                return Update(entity);
 
             return await Insert(entity);
         }
 
-        public virtual async Task Delete(long id)
+        public virtual void Delete(long id)
         {
             _repository.Remove(id);
-            
-            await _repository.SaveChangesAsync();
-        }
-
-        public virtual async Task Delete(Func<TEntity, bool> where)
-        {
-            _repository.RemoveRange(where);
-            await _repository.SaveChangesAsync();
         }
 
         public virtual IQueryable<TEntity> GetAll()

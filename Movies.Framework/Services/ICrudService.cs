@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Movies.Framework.Entities;
+﻿using Movies.Framework.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Movies.Framework.Services
 {
-    public interface ICrudService<TEntity, TContext>
+    public interface ICrudService<TEntity>
         where TEntity : Entity
-        where TContext : DbContext
     {
         Task<TEntity> GetByIdAsync(long id);
 
@@ -17,15 +15,13 @@ namespace Movies.Framework.Services
 
         bool Insert(IEnumerable<TEntity> items);
 
-        Task<TEntity> Update(TEntity entity);
+        TEntity Update(TEntity entity);
 
-        Task<IEnumerable<TEntity>> Update(IEnumerable<TEntity> entities);
+        IEnumerable<TEntity> Update(IEnumerable<TEntity> entities);
 
         Task<TEntity> Save(TEntity entity);
 
-        Task Delete(long id);
-
-        Task Delete(Func<TEntity, bool> where);
+        void Delete(long id);
 
         IQueryable<TEntity> GetAll();
 

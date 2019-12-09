@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Movies.Domain;
 using Movies.Domain.Entities;
 using Movies.Framework.Services;
-using Movies.Infra.Data.Contexts;
 using Movies.Infra.Repositories.Common;
+using Movies.Infra.Repositories.Genres;
 
 namespace Movies.Infra.Services.Genres
 {
-    public class GenreCrudService : CrudService<Genre, MovieContext>, IGenreCrudService
+    public class GenreCrudService : CrudService<Genre>, IGenreCrudService
     {
         private readonly ICommonRepository<Movie> _movieRepository;
 
-        public GenreCrudService(ICommonRepository<Genre> repository, ICommonRepository<Movie> movieRepository) 
+        public GenreCrudService(IGenreRepository repository, ICommonRepository<Movie> movieRepository) 
             : base(repository)
         {
             _movieRepository = movieRepository;
@@ -33,14 +33,14 @@ namespace Movies.Infra.Services.Genres
             return await base.Insert(entity);
         }
         
-        public override async Task<Genre> Update(Genre entity)
+        public override Genre Update(Genre entity)
         {
-            var persisted = await GetByIdAsync(entity.Id);
+            var persisted = Get(entity.Id);
 
             persisted.Name = entity.Name;
             persisted.Active = entity.Active;
 
-            return await base.Update(persisted);
+            return base.Update(persisted);
         }
     }
 }
