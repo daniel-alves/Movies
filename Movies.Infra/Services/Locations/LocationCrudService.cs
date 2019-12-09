@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Movies.Infra.Services.Locations
 {
-    public class LocationCrudService : CrudService<Location, MovieContext>, ILocationCrudService
+    public class LocationCrudService : CrudService<Location>, ILocationCrudService
     {
         public LocationCrudService(ICommonRepository<Location> repository) 
             : base(repository)
@@ -20,9 +20,12 @@ namespace Movies.Infra.Services.Locations
         
         public override async Task<Location> GetByIdAsync(long id)
         {
-            return base.GetAll().Include(e => e.Movies)
-                .ThenInclude(e => e.Movie)
-                .FirstOrDefault(e => e.Id == id);
+            return null;
+
+            //Todo: refatorar
+            //return base.GetAll().Include(e => e.Movies)
+            //    .ThenInclude(e => e.Movie)
+            //    .FirstOrDefault(e => e.Id == id);
         }
 
         public override async Task<Location> Insert(Location entity)
@@ -32,14 +35,14 @@ namespace Movies.Infra.Services.Locations
             return await base.Insert(entity);
         }
 
-        public override async Task<Location> Update(Location entity)
+        public override Location Update(Location entity)
         {
-            var persisted = await GetByIdAsync(entity.Id);
+            var persisted = Get(entity.Id);
 
             persisted.Cpf = entity.Cpf;
             persisted.Movies = entity.Movies;
 
-            return await base.Update(persisted);
+            return base.Update(persisted);
         }
     }
 }

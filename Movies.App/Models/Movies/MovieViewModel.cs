@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Movies.App.Models.Shared;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Movies.App.Models.Movies

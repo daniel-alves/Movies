@@ -4,7 +4,7 @@ using Movies.Infra.Data.Contexts;
 
 namespace Movies.Infra.Services.Locations
 {
-    public interface ILocationCrudService : ICrudService<Location, MovieContext>
+    public interface ILocationCrudService : ICrudService<Location>
     {
     }
 }

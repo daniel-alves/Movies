@@ -1,10 +1,11 @@
 ﻿using Movies.Domain.Entities;
 using Movies.Framework.Services;
-using Movies.Infra.Data.Contexts;
+using System.Collections.Generic;
 
 namespace Movies.Infra.Services.Movies
 {
-    public interface IMovieCrudService : ICrudService<Movie, MovieContext>
+    public interface IMovieCrudService : ICrudService<Movie>
     {
+        List<Movie> GetAllActiveAndContainName(string name);
     }
 }

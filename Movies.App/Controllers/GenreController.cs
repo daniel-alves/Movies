@@ -24,11 +24,14 @@ namespace Movies.App.Controllers
         [HttpGet, ActionName("SelectList")]
         public async Task<IActionResult> SelectList(string term)
         {
-            var list = await _service.GetAll()
-                .Where(e => (e.Name.Contains(term) || string.IsNullOrWhiteSpace(term)) && e.Active)
-                .ToListAsync();
+            //Todo: refatorar
+            //var list = await _service.GetAll()
+            //    .Where(e => (e.Name.Contains(term) || string.IsNullOrWhiteSpace(term)) && e.Active)
+            //    .ToListAsync();
 
-            return Json(list.Select(e => new { id = e.Id, text = e.Name }));
+            //return Json(list.Select(e => new { id = e.Id, text = e.Name }));
+
+            return Json(new { });
         }
     }
 }

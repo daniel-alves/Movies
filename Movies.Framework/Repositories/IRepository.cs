@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Movies.Framework.Repositories.Base
+namespace Movies.Framework.Repositories
 {
-    public interface IRepository<TEntity, TContext>
+    public interface IRepository<TEntity>
        where TEntity : class
-       where TContext : DbContext
     {
         void Add(TEntity entity);
 
@@ -18,17 +15,11 @@ namespace Movies.Framework.Repositories.Base
 
         TEntity Get(long id);
 
-        IQueryable<TEntity> GetAll();
+        List<TEntity> GetPage(int limit, int offset);
 
         void Update(TEntity entity);
 
         void Remove(long id);
-
-        void RemoveRange(Func<TEntity, bool> where);
-
-        Task<int> SaveChangesAsync();
-
-        int SaveChanges();
 
         bool Add(IEnumerable<TEntity> items);
 

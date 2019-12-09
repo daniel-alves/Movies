@@ -4,33 +4,35 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Movies.App.Models;
+using Movies.App.Models.Shared;
 using Movies.Framework.Entities;
 using Movies.Framework.Services;
-using Movies.Infra.Data.Contexts;
 
 namespace Movies.Framework.Controllers
 {
 
     //controller genérico deve ser herdado nunca instanciado diretamente por isso foi colocado o abstract
     //possui todas as operações necessárias para um crud básico
+    //optei por usar ViewModel pq as vezes é necessário passar valores para a view as quais não pertencem ao domain
     public abstract class CrudController<TEntity, TViewModel> : Controller
         where TEntity : Entity
         where TViewModel : ViewModel
     { 
         protected readonly IMapper _mapper;
 
-        protected readonly ICrudService<TEntity, MovieContext> _service;
+        protected readonly ICrudService<TEntity> _service;
         
-        public CrudController(IMapper mapper, ICrudService<TEntity, MovieContext> service)
+        public CrudController(IMapper mapper, ICrudService<TEntity> service)
         {
             _mapper = mapper;
             _service = service;
         }
         
-        public virtual async Task<IActionResult> Index()
-        { 
-            var entity = await _service.GetAll().ToListAsync();
+        public virtual async Task<IActionResult> Index(int page = 1)
+        {
+            var pageViewModel = new PageViewModel<TViewModel>() { Page = page };
+
+            var entity = _service.GetPage(pageViewModel.Limit, pageViewModel.Offset);
 
             return View(_mapper.Map<IEnumerable<TViewModel>>(entity));
         }
@@ -70,7 +72,7 @@ namespace Movies.Framework.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> Edit(long id, TViewModel viewModel)
+        public virtual IActionResult Edit(long id, TViewModel viewModel)
         {
             if (id != viewModel.Id) return NotFound();
 
@@ -78,7 +80,7 @@ namespace Movies.Framework.Controllers
             {
                 try
                 {
-                    await _service.Update(_mapper.Map<TEntity>(viewModel));
+                    _service.Update(_mapper.Map<TEntity>(viewModel));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -105,26 +107,28 @@ namespace Movies.Framework.Controllers
         [HttpPost]
         public virtual async Task<IActionResult> DeleteMany(long[] ids)
         {
-            if (!ids.Any()) return RedirectToAction(nameof(Index));
+            
+            return RedirectToAction(nameof(Index));
 
-            var selection = await _service.GetAll().Where(e => ids.Contains(e.Id)).ToListAsync();
+            //if (!ids.Any()) return RedirectToAction(nameof(Index));
 
-            var viewModels = _mapper.Map<List<TViewModel>>(selection);
+            //var selection = await _service.GetAll().Where(e => ids.Contains(e.Id)).ToListAsync();
 
-            viewModels.ForEach(v => v.CanDelete = _service.CanDelete(v.Id));
+            //var viewModels = _mapper.Map<List<TViewModel>>(selection);
 
-            return View(viewModels);
+            //viewModels.ForEach(v => v.CanDelete = _service.CanDelete(v.Id));
+
+            //return View(viewModels);
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> DeleteManyConfirmed(long[] ids)
+        public virtual IActionResult DeleteManyConfirmed(long[] ids)
         {
-
             foreach(var id in ids)
             {
                 if (_service.CanDelete(id))
                 {
-                    await _service.Delete(id);
+                    _service.Delete(id);
                 }
             }
 
@@ -133,11 +137,11 @@ namespace Movies.Framework.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> DeleteConfirmed(long id)
+        public virtual IActionResult DeleteConfirmed(long id)
         {
             if (_service.CanDelete(id))
             {
-                await _service.Delete(id);
+                _service.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }

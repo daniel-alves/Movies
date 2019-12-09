@@ -2,9 +2,11 @@
 using Movies.Framework.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Dapper.Contrib.Extensions;
 
 namespace Movies.Domain.Entities
 {
+    [Table("Movie")]
     public class Movie : Entity
     {
         [Required]
@@ -19,8 +21,10 @@ namespace Movies.Domain.Entities
         [Required]
         public bool Active { get; set; }
 
+        [Computed]
         public Genre Genre { get; set; }
 
+        [Computed]
         public virtual ICollection<MovieLocation> Locations { get; set; }
     }
 }
