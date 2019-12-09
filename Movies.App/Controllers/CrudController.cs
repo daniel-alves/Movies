@@ -11,6 +11,9 @@ using Movies.Infra.Data.Contexts;
 
 namespace Movies.Framework.Controllers
 {
+
+    //controller genérico deve ser herdado nunca instanciado diretamente por isso foi colocado o abstract
+    //possui todas as operações necessárias para um crud básico
     public abstract class CrudController<TEntity, TViewModel> : Controller
         where TEntity : Entity
         where TViewModel : ViewModel
@@ -18,7 +21,7 @@ namespace Movies.Framework.Controllers
         protected readonly IMapper _mapper;
 
         protected readonly ICrudService<TEntity, MovieContext> _service;
-
+        
         public CrudController(IMapper mapper, ICrudService<TEntity, MovieContext> service)
         {
             _mapper = mapper;
@@ -26,7 +29,7 @@ namespace Movies.Framework.Controllers
         }
         
         public virtual async Task<IActionResult> Index()
-        {
+        { 
             var entity = await _service.GetAll().ToListAsync();
 
             return View(_mapper.Map<IEnumerable<TViewModel>>(entity));
@@ -54,6 +57,7 @@ namespace Movies.Framework.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
             return View(viewModel);
         }
         
@@ -101,6 +105,8 @@ namespace Movies.Framework.Controllers
         [HttpPost]
         public virtual async Task<IActionResult> DeleteMany(long[] ids)
         {
+            if (!ids.Any()) return RedirectToAction(nameof(Index));
+
             var selection = await _service.GetAll().Where(e => ids.Contains(e.Id)).ToListAsync();
 
             var viewModels = _mapper.Map<List<TViewModel>>(selection);
