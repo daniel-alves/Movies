@@ -39,8 +39,10 @@ namespace Movies.Infra.Repositories
         public virtual TEntity Get(long id)
             => DbSet.Find(id);
 
-        public virtual IQueryable<TEntity> GetAll()
-            => DbSet;
+        public virtual List<TEntity> GetPage(int limit, int offset)
+        {
+            return DbSet.Take(limit).Skip(offset).ToList();
+        }
 
         public virtual void Update(TEntity obj)
         {

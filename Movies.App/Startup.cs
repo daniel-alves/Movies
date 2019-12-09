@@ -19,6 +19,7 @@ using Movies.App.Validators;
 using Movies.Infra.Data.Contexts;
 using Movies.Infra.Repositories.Common;
 using Movies.Infra.Repositories.Genres;
+using Movies.Infra.Repositories.Movies;
 using Movies.Infra.Services.Genres;
 using Movies.Infra.Services.Locations;
 using Movies.Infra.Services.Movies;
@@ -65,6 +66,7 @@ namespace Movies.App
             //registra os repositories no catainer D.I
             services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
             services.AddScoped(typeof(IGenreRepository), typeof(GenreRepository));
+            services.AddScoped(typeof(IMovieRepository), typeof(MovieRepository));
 
             //registra os services no container D.I
             services.AddScoped<IGenreCrudService, GenreCrudService>();

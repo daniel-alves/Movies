@@ -20,9 +20,12 @@ namespace Movies.Infra.Services.Locations
         
         public override async Task<Location> GetByIdAsync(long id)
         {
-            return base.GetAll().Include(e => e.Movies)
-                .ThenInclude(e => e.Movie)
-                .FirstOrDefault(e => e.Id == id);
+            return null;
+
+            //Todo: refatorar
+            //return base.GetAll().Include(e => e.Movies)
+            //    .ThenInclude(e => e.Movie)
+            //    .FirstOrDefault(e => e.Id == id);
         }
 
         public override async Task<Location> Insert(Location entity)

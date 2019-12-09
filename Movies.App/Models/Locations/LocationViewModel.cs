@@ -1,4 +1,5 @@
 ﻿using Movies.App.Models.Movies;
+using Movies.App.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -65,9 +65,9 @@ namespace Movies.Framework.Services
             _repository.Remove(id);
         }
 
-        public virtual IQueryable<TEntity> GetAll()
+        public virtual List<TEntity> GetPage(int limit, int offset)
         {
-            var retorno = _repository.GetAll();
+            var retorno = _repository.GetPage(limit, offset);
             return retorno;
         }
 

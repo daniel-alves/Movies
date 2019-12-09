@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Movies.App.Models.Movies;
 using Movies.Domain.Entities;
 using Movies.Framework.Controllers;
@@ -14,20 +13,22 @@ namespace Movies.App.Controllers
     [Authorize]
     public class MovieController : CrudController<Movie, MovieViewModel>
     {
+        private readonly IMovieCrudService _movieService;
+
         public MovieController(IMapper mapper, IMovieCrudService service) 
             : base(mapper, service)
         {
+            _movieService = service;
         }
 
         // GET: Genres/SelectList
         [HttpGet, ActionName("SelectList")]
         public async Task<IActionResult> SelectList(string term)
         {
-            var list = await _service.GetAll()
-                .Where(e => e.Name.Contains(term) && e.Active)
-                .ToListAsync();
+            var list = _movieService.GetAllActiveAndContainName(term)
+                .Select(e => new { id = e.Id, text = e.Name });
 
-            return Json(list.Select(e => new { id = e.Id, text = e.Name }));
+            return Json(list);
         }
     }
 }

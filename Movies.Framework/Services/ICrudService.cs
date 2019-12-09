@@ -1,7 +1,5 @@
 ﻿using Movies.Framework.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Framework.Services
@@ -23,7 +21,7 @@ namespace Movies.Framework.Services
 
         void Delete(long id);
 
-        IQueryable<TEntity> GetAll();
+        List<TEntity> GetPage(int limit, int offset);
 
         TEntity Get(long id);
 

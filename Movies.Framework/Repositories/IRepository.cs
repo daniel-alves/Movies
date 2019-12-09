@@ -15,7 +15,7 @@ namespace Movies.Framework.Repositories
 
         TEntity Get(long id);
 
-        IQueryable<TEntity> GetAll();
+        List<TEntity> GetPage(int limit, int offset);
 
         void Update(TEntity entity);
 

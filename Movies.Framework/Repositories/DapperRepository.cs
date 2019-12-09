@@ -7,6 +7,8 @@ using Dapper.Contrib.Extensions;
 using Movies.Framework.Entities;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Dapper;
+using System.Text;
 
 namespace Movies.Framework.Repositories.Dapper
 {
@@ -60,17 +62,11 @@ namespace Movies.Framework.Repositories.Dapper
             return GetConnection().Get<TEntity>(id);
         }
 
-        public IQueryable<TEntity> GetAll()
+        public List<TEntity> GetPage(int limit, int offset)
         {
-            try
-            {
-                var res = GetConnection().GetAll<TEntity>();
+            var tableName = typeof(TEntity).Name;
 
-            } catch(Exception ex)
-            {
-                var a = ex.Message;
-            }
-            return null;
+            return GetConnection().Query<TEntity>($"Select * From {tableName} Order by Id Offset @offset ROWS FETCH NEXT @limit ROWS ONLY", new { offset, limit }).ToList();
         }
 
         public Task<TEntity> GetByIdAsync(long id)
