@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper.Contrib.Extensions;
 using Movies.Framework.Entities;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace Movies.Framework.Repositories.Dapper
 {
@@ -14,18 +15,18 @@ namespace Movies.Framework.Repositories.Dapper
     {
         private IDbConnection _connection;
 
-        private readonly string _connectionString;
+        private readonly IConfiguration _configuration;
 
-        public DapperRepository(string connectionString)
+        public DapperRepository(IConfiguration configuration)
         {
-            _connectionString = connectionString;
+            _configuration = configuration;
         }
 
         protected IDbConnection GetConnection()
         {
             if (_connection == null)
             {
-                _connection = new SqlConnection(_connectionString);
+                _connection = new SqlConnection(_configuration.GetConnectionString("MovieContext"));
             }
 
             return _connection; ;
@@ -33,20 +34,20 @@ namespace Movies.Framework.Repositories.Dapper
 
         public void Add(TEntity entity)
         {
-            _connection.Insert(entity);
+            GetConnection().Insert(entity);
         }
 
         public bool Add(IEnumerable<TEntity> items)
         {
             foreach(var entity in items)
-                _connection.Insert(entity);
+                GetConnection().Insert(entity);
 
             return true;
         }
 
         public Task AddAsync(TEntity entity)
         {
-            return _connection.InsertAsync(entity);
+            return GetConnection().InsertAsync(entity);
         }
 
         public bool Exists(long id)
@@ -56,40 +57,43 @@ namespace Movies.Framework.Repositories.Dapper
 
         public TEntity Get(long id)
         {
-            return _connection.Get<TEntity>(id);
+            return GetConnection().Get<TEntity>(id);
         }
 
         public IQueryable<TEntity> GetAll()
         {
-            return _connection.GetAll<TEntity>().AsQueryable();
+            try
+            {
+                var res = GetConnection().GetAll<TEntity>();
+
+            } catch(Exception ex)
+            {
+                var a = ex.Message;
+            }
+            return null;
         }
 
         public Task<TEntity> GetByIdAsync(long id)
         {
-            return _connection.GetAsync<TEntity>(id);
+            return GetConnection().GetAsync<TEntity>(id);
         }
 
         public void Remove(long id)
         {
             var entity = Activator.CreateInstance<TEntity>();
             entity.Id = id;
-            _connection.Delete(entity);
-        }
-
-        public void RemoveRange(Func<TEntity, bool> where)
-        {
-            throw new NotImplementedException();
+            GetConnection().Delete(entity);
         }
 
         public void Update(TEntity entity)
         {
-            _connection.Update(entity);
+            GetConnection().Update(entity);
         }
 
         public bool Update(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
-                _connection.Update(entity);
+                GetConnection().Update(entity);
 
             return true;
         }

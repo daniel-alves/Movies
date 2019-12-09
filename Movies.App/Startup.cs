@@ -43,6 +43,9 @@ namespace Movies.App
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //registra as configurações no D.I
+            services.AddSingleton(Configuration);
+
             //registra o automapper no container D.I
             var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
             services.AddSingleton(mappingConfig.CreateMapper());

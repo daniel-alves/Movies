@@ -2,9 +2,11 @@
 using Movies.Framework.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Dapper.Contrib.Extensions;
 
 namespace Movies.Domain.Entities
 {
+    [Table("Location")]
     public class Location : Entity
     {
         [Required]
@@ -13,6 +15,7 @@ namespace Movies.Domain.Entities
         [Required]
         public DateTime LocatedAt { get; set; }
 
+        [Computed]
         public virtual ICollection<MovieLocation> Movies { get; set; }
     }
 }
