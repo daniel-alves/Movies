@@ -1,41 +1,48 @@
-﻿@model IEnumerable<Movies.App.Models.Locations.LocationViewModel>
+﻿@using Movies.App.Models.Locations
+
+@model PageViewModel<LocationViewModel>
 
 @{
     ViewData["Title"] = "Listagem";
 }
 
 <h2>Listagem de locações</h2>
-<hr/>
+<hr />
 
 <p> <a asp-action="Create">Cadastrar</a> </p>
-
+<br/>
+<div class="pull-right">
+    <partial name="../Shared/_Pagination" />
+</div>
 <table class="table">
+
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Cpf)
+                CPF
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LocatedAt)
+                Data da locação
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cpf)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LocatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cpf)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocatedAt)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

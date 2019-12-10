@@ -14,7 +14,9 @@ namespace Movies.App.Mappings
         {
             CreateMap<Genre, GenreViewModel>().ReverseMap();
 
-            CreateMap<Movie, MovieViewModel>().ReverseMap();
+            CreateMap<Movie, MovieViewModel>()
+                .ReverseMap()
+                .ForMember(dest => dest.Genre, opt => opt.Ignore());
 
             CreateMap<Location, LocationViewModel>()
                 .ForMember(dest => dest.Movies, opt => opt.MapFrom(src => src.Movies.Select(e => new MovieViewModel() { Id = e.Movie.Id, Name = e.Movie.Name})))

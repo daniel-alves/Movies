@@ -1,7 +1,9 @@
-﻿using Movies.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Movies.Domain.Entities;
 using Movies.Infra.Data.Contexts;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Movies.Infra.Repositories.Movies
 {
@@ -25,6 +27,16 @@ namespace Movies.Infra.Repositories.Movies
         public Movie GetByName(string name)
         {
             return DbSet.FirstOrDefault(e => e.Name == name);
+        }
+
+        public Task<Movie> GetByIdWithGenreAsync(long id)
+        {
+            return DbSet.Include(e => e.Genre).FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public List<Movie> GetPageWithGenre(int limit, int offset)
+        {
+            return DbSet.Include(e => e.Genre).Take(limit).Skip(offset).ToList();
         }
     }
 }

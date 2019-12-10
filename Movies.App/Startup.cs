@@ -19,6 +19,7 @@ using Movies.App.Validators;
 using Movies.Infra.Data.Contexts;
 using Movies.Infra.Repositories.Common;
 using Movies.Infra.Repositories.Genres;
+using Movies.Infra.Repositories.MovieLocations;
 using Movies.Infra.Repositories.Movies;
 using Movies.Infra.Services.Genres;
 using Movies.Infra.Services.Locations;
@@ -67,6 +68,7 @@ namespace Movies.App
             services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
             services.AddScoped(typeof(IGenreRepository), typeof(GenreRepository));
             services.AddScoped(typeof(IMovieRepository), typeof(MovieRepository));
+            services.AddScoped(typeof(IMovieLocationRepository), typeof(MovieLocationRepository));
 
             //registra os services no container D.I
             services.AddScoped<IGenreCrudService, GenreCrudService>();
@@ -74,11 +76,11 @@ namespace Movies.App
             services.AddScoped<ILocationCrudService, LocationCrudService>();
 
             //registra os validators no container D.I
-            services.AddTransient<IValidator<GenreViewModel>, GenreValidator>();
-            services.AddTransient<IValidator<MovieViewModel>, MovieValidator>();
-            services.AddTransient<IValidator<LocationViewModel>, LocationValidator>();
-            services.AddTransient<IValidator<RegisterViewModel>, RegisterValidator>();
-            services.AddTransient<IValidator<LoginViewModel>, LoginValidator>();
+            services.AddScoped<IValidator<GenreViewModel>, GenreValidator>();
+            services.AddScoped<IValidator<MovieViewModel>, MovieValidator>();
+            services.AddScoped<IValidator<LocationViewModel>, LocationValidator>();
+            services.AddScoped<IValidator<RegisterViewModel>, RegisterValidator>();
+            services.AddScoped<IValidator<LoginViewModel>, LoginValidator>();
 
         }
 

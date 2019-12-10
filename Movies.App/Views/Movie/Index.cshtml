@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Movies.App.Models.Movies.MovieViewModel>
+﻿@using Movies.App.Models.Movies
+
+@model PageViewModel<MovieViewModel>
 
 @{ ViewData["Title"] = "Listagem"; }
 
@@ -6,10 +8,13 @@
 <hr />
 
 <p> <a asp-action="Create">Cadastrar</a> </p>
-<br/>
+<br />
 <form asp-action="DeleteMany">
     <div class="form-group">
-        <input type="submit" value="Excluir seleção" class="btn btn-default deleteAll" disabled/>
+        <input type="submit" value="Excluir seleção" class="btn btn-default deleteAll" disabled />
+        <div class="pull-right">
+            <partial name="../Shared/_Pagination" />
+        </div>
     </div>
     <table class="table">
         <thead>
@@ -18,22 +23,22 @@
                     <input name="all" class="selectAll" title="Selecionar todos" type="checkbox" />
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    Nome
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.GenreName)
+                    Gênero
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CreatedAt)
+                    Data de criação
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Active)
+                    Ativo
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.List)
             {
                 <tr>
                     <td>

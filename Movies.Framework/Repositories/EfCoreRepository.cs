@@ -15,6 +15,16 @@ namespace Movies.Infra.Repositories
 
         protected readonly DbSet<TEntity> DbSet;
 
+        private void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        private async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
         public EfCoreRepository(TContext context)
         {
             _context = context;
@@ -24,13 +34,13 @@ namespace Movies.Infra.Repositories
         public virtual void Add(TEntity obj)
         {
             DbSet.Add(obj);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public async Task AddAsync(TEntity obj)
         {
             await DbSet.AddAsync(obj);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
         }
 
         public virtual Task<TEntity> GetByIdAsync(long id)
@@ -47,7 +57,7 @@ namespace Movies.Infra.Repositories
         public virtual void Update(TEntity obj)
         {
             DbSet.Update(obj);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public bool Exists(long id)
@@ -64,7 +74,7 @@ namespace Movies.Infra.Repositories
             if (entity != null)
             {
                 DbSet.Remove(entity);
-                _context.SaveChanges();
+                SaveChanges();
             }
         }
 
@@ -73,9 +83,9 @@ namespace Movies.Infra.Repositories
             var list = items.ToList();
             foreach (var item in list)
             {
-                Add(item);
+                DbSet.Add(item);
             }
-            _context.SaveChanges();
+            SaveChanges();
             return true;
         }
 
@@ -85,7 +95,7 @@ namespace Movies.Infra.Repositories
 
             foreach (var item in list)
             {
-                Update(item);
+                DbSet.Update(item);
             }
             _context.SaveChanges();
             return true;

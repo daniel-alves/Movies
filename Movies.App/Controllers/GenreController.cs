@@ -14,24 +14,21 @@ namespace Movies.App.Controllers
     [Authorize]
     public class GenreController : CrudController<Genre, GenreViewModel>
     {
-        
+        private readonly IGenreCrudService _service;
+
         public GenreController(IMapper mapper, IGenreCrudService service) 
             : base(mapper, service)
         {
-            
+            _service = service;
         }
 
-        [HttpGet, ActionName("SelectList")]
-        public async Task<IActionResult> SelectList(string term)
+        [HttpGet]
+        public IActionResult SelectList(string term)
         {
-            //Todo: refatorar
-            //var list = await _service.GetAll()
-            //    .Where(e => (e.Name.Contains(term) || string.IsNullOrWhiteSpace(term)) && e.Active)
-            //    .ToListAsync();
+            var list = _service.GetAllActiveAndContainName(term)
+                .Select(e => new { id = e.Id, text = e.Name });
 
-            //return Json(list.Select(e => new { id = e.Id, text = e.Name }));
-
-            return Json(new { });
+            return Json(list);
         }
     }
 }

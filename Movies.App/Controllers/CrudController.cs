@@ -28,13 +28,15 @@ namespace Movies.Framework.Controllers
             _service = service;
         }
         
-        public virtual async Task<IActionResult> Index(int page = 1)
+        public virtual IActionResult Index(int page = 1)
         {
             var pageViewModel = new PageViewModel<TViewModel>() { Page = page };
 
-            var entity = _service.GetPage(pageViewModel.Limit, pageViewModel.Offset);
+            var list = _service.GetPage(pageViewModel.Limit, pageViewModel.Offset);
 
-            return View(_mapper.Map<IEnumerable<TViewModel>>(entity));
+            pageViewModel.List = _mapper.Map<List<TViewModel>>(list);
+
+            return View(pageViewModel);
         }
         
         public virtual async Task<IActionResult> Details(long id)

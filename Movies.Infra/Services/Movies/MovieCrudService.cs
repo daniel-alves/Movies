@@ -3,47 +3,46 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Movies.Domain.Entities;
 using Movies.Framework.Services;
-using Movies.Infra.Repositories.Common;
+using Movies.Infra.Repositories.MovieLocations;
 using Movies.Infra.Repositories.Movies;
 
 namespace Movies.Infra.Services.Movies
 {
     public class MovieCrudService : CrudService<Movie>, IMovieCrudService
     {
-        protected readonly IMovieRepository _movieRepository;
+        protected readonly IMovieRepository _repository;
 
-        private readonly ICommonRepository<MovieLocation> _movieLocationRepository;
+        private readonly IMovieLocationRepository _movieLocationRepository;
         
-        public MovieCrudService(IMovieRepository repository, ICommonRepository<MovieLocation> movieLocationRepository) 
+        public MovieCrudService(IMovieRepository repository, IMovieLocationRepository movieLocationRepository) 
             : base(repository)
         {
-            _movieRepository = repository;
+            _repository = repository;
             _movieLocationRepository = movieLocationRepository;
         }
-
-        //refatorar
+        
         public override bool CanDelete(long id)
         {
-            //var location = _movieLocationRepository.GetAll()
-            //    .FirstOrDefault(e => e.MovieId == id);
+            var location = _movieLocationRepository.GetByMovieId(id);
 
-            //return location == null;
-            return false;
+            return location == null;
         }
 
-        //public override List<Movie> GetPage(int limit, int offset)
-        //{
-        //    return base.GetPage(limit, offset).Include(e => e.Genre);
-        //}
+        public override List<Movie> GetPage(int limit, int offset)
+        {
+            return _repository.GetPageWithGenre(limit, offset);
+        }
 
-        //public override async Task<Movie> GetByIdAsync(long id)
-        //{
-        //    return base.GetAll().Include(e => e.Genre).FirstOrDefault(e => e.Id == id);
-        //}
+        public override async Task<Movie> GetByIdAsync(long id)
+        {
+            return await _repository.GetByIdWithGenreAsync(id);
+        }
 
         public override async Task<Movie> Insert(Movie entity)
         {
             entity.CreatedAt = DateTime.Now;
+
+            entity.Genre = null;
 
             return await base.Insert(entity);
         }
@@ -61,7 +60,7 @@ namespace Movies.Infra.Services.Movies
 
         public List<Movie> GetAllActiveAndContainName(string name)
         {
-            return _movieRepository.GetAllActiveAndContainName(name);
+            return _repository.GetAllActiveAndContainName(name);
         }
     }
 }

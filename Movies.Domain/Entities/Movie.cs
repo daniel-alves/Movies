@@ -3,10 +3,11 @@ using Movies.Framework.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Dapper.Contrib.Extensions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Movies.Domain.Entities
 {
-    [Table("Movie")]
+    [Dapper.Contrib.Extensions.Table("Movie")]
     public class Movie : Entity
     {
         [Required]

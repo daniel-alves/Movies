@@ -44,7 +44,7 @@ namespace Movies.Infra.Validators
         {
             var movie = _movieRepository.GetByName(name);
 
-            return movie == null || movie.Id != data.Id;
+            return movie == null || movie.Id == data.Id;
         }
     }
 }

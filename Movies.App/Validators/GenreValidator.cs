@@ -22,7 +22,7 @@ namespace Movies.App.Validators
         {
             var genre = _genreRepository.GetByName(name);
             
-            return genre == null || genre.Id != data.Id;
+            return genre == null || genre.Id == data.Id;
         }
     }
 }
