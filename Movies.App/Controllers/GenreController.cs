@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Movies.App.Models.Genres;
 using Movies.Domain;
 using Movies.Framework.Controllers;
@@ -22,6 +20,7 @@ namespace Movies.App.Controllers
             _service = service;
         }
 
+        //lista todos os genêros ativos, e caso term não seja vazio filtra por genêros que tenham o valor de term no nome
         [HttpGet]
         public IActionResult SelectList(string term)
         {

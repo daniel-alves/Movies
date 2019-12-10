@@ -21,8 +21,8 @@ namespace Movies.App.Controllers
             _movieService = service;
         }
 
-        // GET: Genres/SelectList
-        [HttpGet, ActionName("SelectList")]
+        //lista todos os filmes ativos e filtra sómente os filmes que contenham o valor de term no nome
+        [HttpGet]
         public async Task<IActionResult> SelectList(string term)
         {
             var list = _movieService.GetAllActiveAndContainName(term)

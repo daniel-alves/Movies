@@ -52,6 +52,7 @@ namespace Movies.Framework.Services
             return entities;
         }
 
+        //cria uma nova entity ou atualiza caso ja exista
         public virtual async Task<TEntity> Save(TEntity entity)
         {
             if (entity.Id > 0)
@@ -81,6 +82,10 @@ namespace Movies.Framework.Services
             return _repository.Exists(id);
         }
 
+        //permite a quem implementar verificar se é possível ou não excluir uma entity pelo id
+        //é abstrata pois assim o dev que implementar a classe está ciente que deve implementar o método conforme sua necessidade,
+        //se apenas retornasse true por padrão um dev desavisado acabaria por herdar e permitir a exclusão sem saber da existência e
+        //utilidade desse método
         public abstract bool CanDelete(long id);
 
         public List<TEntity> GetAllById(long[] ids)

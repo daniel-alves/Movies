@@ -4,6 +4,7 @@ using Movies.Infra.Repositories.Genres;
 
 namespace Movies.App.Validators
 {
+    //validações, os erros ficam no model state
     public class GenreValidator : AbstractValidator<GenreViewModel>
     {
         private readonly IGenreRepository _genreRepository;
@@ -18,6 +19,7 @@ namespace Movies.App.Validators
             _genreRepository = genreRepository;
         }
 
+        //garante que o nome do genêro seja único
         private bool BeUniqueName(GenreViewModel data, string name)
         {
             var genre = _genreRepository.GetByName(name);

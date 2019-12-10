@@ -6,7 +6,7 @@ using Dapper.Contrib.Extensions;
 
 namespace Movies.Domain.Entities
 {
-    [Table("Location")]
+    [Table("Location")] //atributo utilizado pelo dapper
     public class Location : Entity
     {
         [Required]
@@ -15,7 +15,7 @@ namespace Movies.Domain.Entities
         [Required]
         public DateTime LocatedAt { get; set; }
 
-        [Computed]
+        [Computed] //atributo utilizado pelo dapper
         public virtual ICollection<MovieLocation> Movies { get; set; }
     }
 }

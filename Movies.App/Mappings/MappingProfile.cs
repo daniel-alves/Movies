@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace Movies.App.Mappings
 {
+    //auto-mapper para mapear entities para view-model e view-model para entity
     public class MappingProfile : Profile
     {
         public MappingProfile()

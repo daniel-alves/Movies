@@ -4,6 +4,7 @@ using Movies.Domain.Entities;
 
 namespace Movies.Infra.Data.Configurations
 {
+    //configuração de relacionamento da tabela MovieLocation
     public class MovieLocationConfiguration : IEntityTypeConfiguration<MovieLocation>
     {
         public void Configure(EntityTypeBuilder<MovieLocation> builder)

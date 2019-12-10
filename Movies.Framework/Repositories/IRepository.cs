@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Framework.Repositories
 {
+    //contrato de repositório padrão a forma de acessar os dados pode ser diferente no caso foi utilizado dapper e ef core
+    //podem ser adicionados outros conforme a necessidade desta forma é possível mudar de ORM facilmente desde que seja utilizado 
+    //o repository pattern com este contrato
     public interface IRepository<TEntity>
        where TEntity : class
     {

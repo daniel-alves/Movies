@@ -3,6 +3,7 @@ using Movies.App.Models.Accounts;
 
 namespace Movies.App.Validators
 {
+    //validações, os erros ficam no model state
     public class RegisterValidator : AbstractValidator<RegisterViewModel>
     {
         public RegisterValidator()

@@ -7,7 +7,7 @@ using Dapper.Contrib.Extensions;
 
 namespace Movies.Domain
 {
-    [Table("Genre")]
+    [Table("Genre")] //utilizado pelo dapper
     public class Genre : Entity
     {
         [MinLength(5), MaxLength(50), Required]
@@ -19,7 +19,7 @@ namespace Movies.Domain
         [Required]
         public bool Active { get; set; }
 
-        [Computed]
+        [Computed] //atributo utilizado pelo dapper, indica para que ele não tente inserir esta informação no banco
         public ICollection<Movie> Movies { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Movies.Infra.Validators
 {
+    //validações, os erros ficam no model state
     public class MovieValidator : AbstractValidator<MovieViewModel>
     {
         private readonly IMovieRepository _movieRepository;
@@ -28,6 +29,7 @@ namespace Movies.Infra.Validators
             _movieRepository = movieRepository;
         }
 
+        //garante que sómente genêros ativos sejam vinculados
         private async Task<bool> BeActive(long genreId, CancellationToken token)
         {
             var genre = await _genreRepository.GetByIdAsync(genreId);
@@ -35,11 +37,13 @@ namespace Movies.Infra.Validators
             return genre != null && genre.Active;
         }
 
+        //garante que o id de genêro recebido esteja cadastrado
         private bool Exists(long genreId)
         { 
             return _genreRepository.Exists(genreId);
         }
 
+        //garante que o nome do filme seja único
         private bool BeUniqueName(MovieViewModel data, string name)
         {
             var movie = _movieRepository.GetByName(name);

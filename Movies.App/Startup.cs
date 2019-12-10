@@ -17,7 +17,6 @@ using Movies.App.Models.Locations;
 using Movies.App.Models.Movies;
 using Movies.App.Validators;
 using Movies.Infra.Data.Contexts;
-using Movies.Infra.Repositories.Common;
 using Movies.Infra.Repositories.Genres;
 using Movies.Infra.Repositories.Locations;
 using Movies.Infra.Repositories.MovieLocations;
@@ -66,7 +65,6 @@ namespace Movies.App
                 .AddErrorDescriber<PtBrIdentityErrorDescriber>();
 
             //registra os repositories no catainer D.I
-            services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
             services.AddScoped(typeof(IGenreRepository), typeof(GenreRepository));
             services.AddScoped(typeof(IMovieRepository), typeof(MovieRepository));
             services.AddScoped(typeof(IMovieLocationRepository), typeof(MovieLocationRepository));

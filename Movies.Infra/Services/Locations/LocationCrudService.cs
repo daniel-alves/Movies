@@ -1,8 +1,6 @@
 ﻿using Movies.Domain.Entities;
 using Movies.Framework.Services;
 using Movies.Infra.Repositories.Locations;
-using Movies.Infra.Repositories.MovieLocations;
-using Movies.Infra.Repositories.Movies;
 using System;
 using System.Threading.Tasks;
 
@@ -19,13 +17,15 @@ namespace Movies.Infra.Services.Locations
             _repository = repository;
         }
         
+        //a locação sempre pode ser excluida não há tabelas que dependam dela atualmente
         public override bool CanDelete(long id) => true;
         
+        //busca a locação com os filmes pelo id
         public override async Task<Location> GetByIdAsync(long id)
         {
             return _repository.GetByIdWithMovies(id);
         }
-
+        
         public override async Task<Location> Insert(Location entity)
         {
             entity.LocatedAt = DateTime.Now;
@@ -33,6 +33,7 @@ namespace Movies.Infra.Services.Locations
             return await base.Insert(entity);
         }
 
+        //atualiza a locação mantendo os dados não editáveis inalterados
         public override Location Update(Location entity)
         {
             var persisted = _repository.GetByIdWithMovies(entity.Id);

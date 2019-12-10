@@ -28,6 +28,7 @@ namespace Movies.Framework.Controllers
             _service = service;
         }
         
+        //página de listagem e paginação
         public virtual IActionResult Index(int page = 1)
         {
             var pageViewModel = new PageViewModel<TViewModel>() { Page = page };
@@ -38,19 +39,22 @@ namespace Movies.Framework.Controllers
 
             return View(pageViewModel);
         }
-        
+
+        //página de detalhes da entidade
         public virtual async Task<IActionResult> Details(long id)
         {
             var entity = await _service.GetByIdAsync(id);
 
             return View(_mapper.Map<TViewModel>(entity));
         }
-        
+
+        //página com formulário para cadastro
         public virtual IActionResult Create()
         {
             return View();
         }
         
+        //ação para persistir os dados da tela no banco de dados
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> Create(TViewModel viewModel)
@@ -65,6 +69,7 @@ namespace Movies.Framework.Controllers
             return View(viewModel);
         }
         
+        //página com formulário para edição
         public virtual async Task<IActionResult> Edit(long id)
         {
             var entity = await _service.GetByIdAsync(id);
@@ -72,6 +77,7 @@ namespace Movies.Framework.Controllers
             return View(_mapper.Map<TViewModel>(entity));
         }
         
+        //ação para persistir os dados alterados na base
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual IActionResult Edit(long id, TViewModel viewModel)
@@ -96,6 +102,7 @@ namespace Movies.Framework.Controllers
             return View(viewModel);
         }
         
+        //pagina para confirmação da exclusão sómente se a entity não tiver referências
         public virtual async Task<IActionResult> Delete(long id)
         {
             var entity = await _service.GetByIdAsync(id);
@@ -106,6 +113,7 @@ namespace Movies.Framework.Controllers
             return View(viewModel);
         }
 
+        //pagina para confirmação da exclusão em massa sómente se a entity não tiver referência
         [HttpPost]
         public virtual IActionResult DeleteMany(long[] ids)
         {
@@ -118,6 +126,7 @@ namespace Movies.Framework.Controllers
             return View(viewModels);
         }
 
+        //ação de exclusão em massa das entities que não tem referência
         [HttpPost]
         public virtual IActionResult DeleteManyConfirmed(long[] ids)
         {
@@ -132,6 +141,7 @@ namespace Movies.Framework.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //ação de excçusão de uma entity sómente se a entity não tiver referências
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public virtual IActionResult DeleteConfirmed(long id)
@@ -146,6 +156,7 @@ namespace Movies.Framework.Controllers
             return RedirectToAction(nameof(Delete), new { id });
         }
 
+        //verifica pelo id se o objeto existe
         private bool GenreExists(long id)
             => _service.Exists(id);
     }

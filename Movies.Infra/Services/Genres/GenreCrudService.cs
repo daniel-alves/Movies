@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace Movies.Infra.Services.Genres
 {
+    //herda as funcionalidade gerais e implementa as especifidades
     public class GenreCrudService : CrudService<Genre>, IGenreCrudService
     { 
         private readonly IGenreRepository _genreRepository;
@@ -21,6 +22,7 @@ namespace Movies.Infra.Services.Genres
             _movieRepository = movieRepository;
         }
 
+        //faz a verificação se o genêro está vinculado a um filme
         public override bool CanDelete(long id)
         {
             var movie = _movieRepository.GetByGenreId(id);
@@ -28,6 +30,7 @@ namespace Movies.Infra.Services.Genres
             return movie == null;
         }
 
+        //insere um genêro e seta a data de criação
         public override async Task<Genre> Insert(Genre entity)
         {
             entity.CreatedAt = DateTime.Now;
@@ -35,6 +38,7 @@ namespace Movies.Infra.Services.Genres
             return await base.Insert(entity);
         }
         
+        //atualiza os dados do genêro mantendo os dados não editáveis ou seja que não vem do formulário
         public override Genre Update(Genre entity)
         {
             var persisted = Get(entity.Id);
@@ -45,6 +49,7 @@ namespace Movies.Infra.Services.Genres
             return base.Update(persisted);
         }
 
+        //busca todos os genêros ativos que contenham name no nome
         public List<Genre> GetAllActiveAndContainName(string name)
         {
             return _genreRepository.GetAllActiveAndContainName(name);

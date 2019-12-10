@@ -6,6 +6,7 @@ using Movies.Infra.Data.Configurations;
 
 namespace Movies.Infra.Data.Contexts
 {
+    //contexto na nossa necessidade mais contextos podem ser inseridos separando as entities de uma maneira mais inteligente
     public class MovieContext : IdentityDbContext
     {
         public DbSet<Genre> Genre { get; set; }

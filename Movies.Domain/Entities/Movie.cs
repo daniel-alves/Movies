@@ -3,11 +3,10 @@ using Movies.Framework.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Dapper.Contrib.Extensions;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Movies.Domain.Entities
 {
-    [Dapper.Contrib.Extensions.Table("Movie")]
+    [Table("Movie")] //atributo utilizado pelo dapper
     public class Movie : Entity
     {
         [Required]
@@ -22,10 +21,10 @@ namespace Movies.Domain.Entities
         [Required]
         public bool Active { get; set; }
 
-        [Computed]
+        [Computed] //atributo utilizado pelo dapper
         public Genre Genre { get; set; }
 
-        [Computed]
+        [Computed] //atributo utilizado pelo dapper
         public virtual ICollection<MovieLocation> Locations { get; set; }
     }
 }

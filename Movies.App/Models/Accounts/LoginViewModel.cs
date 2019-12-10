@@ -10,7 +10,7 @@ namespace Movies.App.Models.Accounts
         [Required, DataType(DataType.Password), Display(Name = "Senha")]
         public string Password { get; set; }
 
-        [Display(Name = "Lembrar")]
+        [Display(Name = "Mantenha-me conectado")]
         public bool RememberMe { get; set; }
     }
 }
