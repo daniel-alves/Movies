@@ -21,3 +21,6 @@ dotnet ef database update -c MovieContext -s ..\Movies.App
 Endereço da aplicação públicada na Azure
 ----------------------------------------
 https://moviesapp20191208034407.azurewebsites.net/
+
+# OBS
+- Todas as classes possuem interface mesmo sem necessidade aparente para facilitar na hora de criar os testes.
