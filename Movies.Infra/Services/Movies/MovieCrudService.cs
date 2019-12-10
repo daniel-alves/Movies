@@ -42,8 +42,6 @@ namespace Movies.Infra.Services.Movies
         {
             entity.CreatedAt = DateTime.Now;
 
-            entity.Genre = null;
-
             return await base.Insert(entity);
         }
 
