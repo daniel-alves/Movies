@@ -1,17 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Movies.Framework.Entities;
+﻿using Movies.Framework.Entities;
 using Movies.Framework.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Framework.Services
 {
+
+    //O service serve como um proxy para os repositórios oferece um API pública comun para todos os repositórios mantendo a flexibilidade
     public abstract class CrudService<TEntity> : ICrudService<TEntity>
         where TEntity : Entity
     {
-        protected readonly IRepository<TEntity> _repository;
+        private readonly IRepository<TEntity> _repository;
 
         protected CrudService(IRepository<TEntity> repository)
         {

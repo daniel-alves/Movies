@@ -1,11 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Movies.Domain.Entities;
+﻿using Movies.Domain.Entities;
 using Movies.Framework.Services;
-using Movies.Infra.Data.Contexts;
-using Movies.Infra.Repositories.Common;
 using Movies.Infra.Repositories.Locations;
+using Movies.Infra.Repositories.MovieLocations;
+using Movies.Infra.Repositories.Movies;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Infra.Services.Locations
@@ -37,7 +35,7 @@ namespace Movies.Infra.Services.Locations
 
         public override Location Update(Location entity)
         {
-            var persisted = Get(entity.Id);
+            var persisted = _repository.GetByIdWithMovies(entity.Id);
 
             persisted.Cpf = entity.Cpf;
             persisted.Movies = entity.Movies;
