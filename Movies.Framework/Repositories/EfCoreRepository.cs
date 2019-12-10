@@ -100,5 +100,10 @@ namespace Movies.Infra.Repositories
             _context.SaveChanges();
             return true;
         }
+
+        public List<TEntity> GetAllById(long[] ids)
+        {
+            return DbSet.Where(e => ids.Contains(e.Id)).ToList();
+        }
     }
 }

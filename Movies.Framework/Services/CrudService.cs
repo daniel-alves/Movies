@@ -82,5 +82,10 @@ namespace Movies.Framework.Services
         }
 
         public abstract bool CanDelete(long id);
+
+        public List<TEntity> GetAllById(long[] ids)
+        {
+            return _repository.GetAllById(ids);
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace Movies.Framework.Services
 
         TEntity Get(long id);
 
+        List<TEntity> GetAllById(long[] ids);
+
         bool Exists(long id);
 
         bool CanDelete(long id);

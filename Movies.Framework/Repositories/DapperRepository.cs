@@ -8,7 +8,6 @@ using Movies.Framework.Entities;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Dapper;
-using System.Text;
 
 namespace Movies.Framework.Repositories.Dapper
 {
@@ -92,6 +91,13 @@ namespace Movies.Framework.Repositories.Dapper
                 GetConnection().Update(entity);
 
             return true;
+        }
+
+        public List<TEntity> GetAllById(long[] ids)
+        {
+            var tableName = typeof(TEntity).Name;
+
+            return GetConnection().Query<TEntity>($"Select * From {tableName} WHERE Id IN @ids", new {  ids }).ToList();
         }
     }
 }

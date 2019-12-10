@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Movies.App.Models.Shared;
 using Movies.Framework.Entities;
 using Movies.Framework.Services;
+using System.Linq;
 
 namespace Movies.Framework.Controllers
 {
@@ -107,20 +107,15 @@ namespace Movies.Framework.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> DeleteMany(long[] ids)
+        public virtual IActionResult DeleteMany(long[] ids)
         {
-            
-            return RedirectToAction(nameof(Index));
+            if (!ids.Any()) return RedirectToAction(nameof(Index));
 
-            //if (!ids.Any()) return RedirectToAction(nameof(Index));
+            var viewModels = _mapper.Map<List<TViewModel>>(_service.GetAllById(ids));
 
-            //var selection = await _service.GetAll().Where(e => ids.Contains(e.Id)).ToListAsync();
+            viewModels.ForEach(v => v.CanDelete = _service.CanDelete(v.Id));
 
-            //var viewModels = _mapper.Map<List<TViewModel>>(selection);
-
-            //viewModels.ForEach(v => v.CanDelete = _service.CanDelete(v.Id));
-
-            //return View(viewModels);
+            return View(viewModels);
         }
 
         [HttpPost]

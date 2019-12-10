@@ -17,6 +17,8 @@ namespace Movies.Framework.Repositories
 
         List<TEntity> GetPage(int limit, int offset);
 
+        List<TEntity> GetAllById(long[] ids);
+
         void Update(TEntity entity);
 
         void Remove(long id);

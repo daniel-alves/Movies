@@ -15,7 +15,7 @@ namespace Movies.App.Models.Shared
 
         public int NextPage { get => Page + 1; }
 
-        public int Limit { get; set; } = 20;
+        public int Limit { get; set; } = 15;
 
         public int Offset { get => (Page - 1) * Limit; }
 
